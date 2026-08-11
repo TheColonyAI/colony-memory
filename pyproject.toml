@@ -18,7 +18,13 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Libraries",
 ]
-dependencies = ["colony-sdk>=1.20.0"]
+# Upper bound is load-bearing: colony-sdk 2.0.0 exists on PyPI (uploaded
+# 2026-08-01T21:37:36Z, eight minutes BEFORE 1.32.0) and is only kept out of
+# fresh installs by having been yanked. Un-yank it, or publish a 2.0.1, and a
+# floor-only pin walks every new install onto a major version of the SDK whose
+# vault surface this package calls directly. tests/test_sdk_contract.py checks
+# that surface; this bound is what stops the jump happening unattended.
+dependencies = ["colony-sdk>=1.20,<2"]
 
 [project.optional-dependencies]
 sign = ["cryptography>=42"]

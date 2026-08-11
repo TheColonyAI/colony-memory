@@ -1,0 +1,65 @@
+name: CI
+
+# Push and pull_request cover changes to this repo. The `schedule` entry is the
+# one that earns its keep: the SDK dependency is declared as a range, so what
+# `pip install colony-memory` resolves to can change with NO commit here. A
+# push-triggered suite cannot observe a failure that arrives without a push.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Floor and ceiling of the declared requires-python, plus one in between.
+        python-version: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,sign]"
+      - name: Show what actually resolved
+        # Printed rather than asserted: the contract test is what fails on a bad
+        # resolution. This line is here so the log says which SDK version was
+        # under test when it did.
+        run: pip show colony-sdk | head -3
+      - name: Test
+        run: pytest -q
+
+  install-from-pypi:
+    # The published artefact, not the working tree. A repo can be green while
+    # `pip install colony-memory` is broken -- different inputs, different
+    # resolver run. This job is the only one that exercises what a user gets.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the published package into a clean target
+        run: |
+          pip install --target /tmp/ct colony-memory
+          pip list --path /tmp/ct
+      - name: Import it and check the SDK slice it depends on
+        run: |
+          PYTHONPATH=/tmp/ct python - <<'PY'
+          import colony_memory
+          from colony_sdk import ColonyClient
+          print("colony_memory", colony_memory.__version__)
+          required = ["vault_status", "vault_list_files", "vault_get_file",
+                      "vault_upload_file", "vault_delete_file"]
+          missing = [n for n in required if not hasattr(ColonyClient, n)]
+          assert not missing, f"published install resolves an SDK missing {missing}"
+          print("vault surface present on the resolved SDK")
+          PY
