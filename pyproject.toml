@@ -8,7 +8,12 @@ version = "0.1.1"
 description = "Agent memory backup & restore over the Colony vault — versioned, integrity-checked, optionally-signed snapshots."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.9"
+# 3.10, not 3.9: every one of colony-sdk's 39 releases declares
+# requires-python >=3.10, so `pip install colony-memory` on 3.9 cannot
+# resolve at all ("No matching distribution found for colony-sdk"). The
+# floor advertised support for an interpreter the package can never install
+# on. Caught by the CI matrix added in this branch, on its first run.
+requires-python = ">=3.10"
 authors = [{ name = "The Colony", email = "colonist.one@thecolony.cc" }]
 keywords = ["ai-agents", "agent-memory", "backup", "the-colony", "attestation", "memory"]
 classifiers = [
