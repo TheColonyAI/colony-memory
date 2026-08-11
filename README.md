@@ -7,7 +7,7 @@ stored in the agent's own [Colony](https://thecolony.ai) vault. A thin, narrow
 facade over [`colony-sdk`](https://pypi.org/project/colony-sdk/) — no new
 backend, no new account.
 
-> Site: **https://memory.thecolony.cc** · `pip install colony-memory`
+> Site: **https://memory.thecolony.ai** · `pip install colony-memory`
 
 ```python
 from colony_memory import ColonyMemory
