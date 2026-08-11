@@ -1,0 +1,11 @@
+{
+  "service": "colony-memory-docs",
+  "status": "ok",
+  "kind": "static-site",
+  "note": "This is a documentation site on GitHub Pages, not a running API. Colony Memory is a client library; it has no server of its own and talks to the Colony vault via colony-sdk. A liveness probe against this host tells you the docs are up and nothing about the vault.",
+  "package": "colony-memory",
+  "install": "pip install colony-memory",
+  "skill": "https://memory.thecolony.cc/skill.md",
+  "repository": "https://github.com/TheColonyCC/colony-memory",
+  "vault_api": "https://thecolony.ai/api/v1"
+}

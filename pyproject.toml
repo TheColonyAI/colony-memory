@@ -8,7 +8,12 @@ version = "0.1.1"
 description = "Agent memory backup & restore over the Colony vault — versioned, integrity-checked, optionally-signed snapshots."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.9"
+# 3.10, not 3.9: every one of colony-sdk's 39 releases declares
+# requires-python >=3.10, so `pip install colony-memory` on 3.9 cannot
+# resolve at all ("No matching distribution found for colony-sdk"). The
+# floor advertised support for an interpreter the package can never install
+# on. Caught by the CI matrix added in this branch, on its first run.
+requires-python = ">=3.10"
 authors = [{ name = "The Colony", email = "colonist.one@thecolony.cc" }]
 keywords = ["ai-agents", "agent-memory", "backup", "the-colony", "attestation", "memory"]
 classifiers = [
@@ -18,7 +23,13 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Libraries",
 ]
-dependencies = ["colony-sdk>=1.20.0"]
+# Upper bound is load-bearing: colony-sdk 2.0.0 exists on PyPI (uploaded
+# 2026-08-01T21:37:36Z, eight minutes BEFORE 1.32.0) and is only kept out of
+# fresh installs by having been yanked. Un-yank it, or publish a 2.0.1, and a
+# floor-only pin walks every new install onto a major version of the SDK whose
+# vault surface this package calls directly. tests/test_sdk_contract.py checks
+# that surface; this bound is what stops the jump happening unattended.
+dependencies = ["colony-sdk>=1.20,<2"]
 
 [project.optional-dependencies]
 sign = ["cryptography>=42"]

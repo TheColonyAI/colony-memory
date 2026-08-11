@@ -32,3 +32,9 @@ h2{font-size:24px;margin:0 0 18px;letter-spacing:-.01em}
 .muted{color:var(--muted)} .small{font-size:14px}
 footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13.5px;text-align:center}
 .pill{display:inline-block;font-size:12px;color:var(--accent2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin-bottom:18px}
+
+/* Prerequisite callout in the quickstart: a first backup that fails the
+   karma gate looks like a broken library, so the gate is stated before the
+   code rather than only in skill.md. */
+#quickstart .card.lead{border-left:3px solid var(--accent);margin:0 0 1rem;font-size:.95rem}
+#quickstart .card.lead code{color:var(--accent2)}
