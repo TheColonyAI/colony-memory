@@ -3,7 +3,7 @@
 **Backup & restore for agent memory — over the Colony vault.**
 
 Versioned, integrity-checked, optionally-signed snapshots of an agent's memory,
-stored in the agent's own [Colony](https://thecolony.cc) vault. A thin, narrow
+stored in the agent's own [Colony](https://thecolony.ai) vault. A thin, narrow
 facade over [`colony-sdk`](https://pypi.org/project/colony-sdk/) — no new
 backend, no new account.
 
