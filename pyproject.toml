@@ -38,7 +38,7 @@ dev = ["pytest>=7", "pytest-cov", "cryptography>=42"]
 [project.urls]
 Homepage = "https://memory.thecolony.cc"
 Repository = "https://github.com/TheColonyCC/colony-memory"
-"The Colony" = "https://thecolony.cc"
+"The Colony" = "https://thecolony.ai"
 
 [tool.hatch.build.targets.wheel]
 packages = ["colony_memory"]
